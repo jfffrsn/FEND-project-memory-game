@@ -21,6 +21,10 @@ let moves = 0;
 let openedCards = [];
 let matchedCards = []; //use for ending game
 
+//ratings
+let starContainer = document.querySelector('.stars');
+let star = `<li><i class="fa fa-star"></i></li>`;
+
 
 //start the game
 function init() {
@@ -28,7 +32,6 @@ function init() {
     for(let i = 0; i < cards.length; i++) {
         const card = document.createElement("li");
         card.classList.add('card');
-        card.classList.add('show'); //testing
         card.innerHTML = `<i class='${cards[i]}'></i>`;
         cardDeck.appendChild(card);
 
@@ -36,6 +39,7 @@ function init() {
         // Add Click Event to each Card
         click(card);
         movesCounter.innerHTML = 0;
+        starContainer.innerHTML = star + star + star;
     }
 };
 
@@ -75,17 +79,19 @@ function compareCards( first, second) {
         second.classList.add("match");
 
         matchedCards.push(first, second);
-        openedCards =[];
+        openedCards = [];
     } else {
         setTimeout(function () {
-            first.classList.remove("open", "xshow", "disable");
-            second.classList.remove("open", "xshow", "disable");
-            openedCards =[];
+            first.classList.remove("open", "show", "disable");
+            second.classList.remove("open", "show", "disable");
+            openedCards = [];
         }, 500);
 
 
     }
     countMoves();
+    rateGame();
+    gameOver();
 
 }
 
@@ -102,9 +108,26 @@ function countMoves(){
 
 
 //rate the game
+function rateGame() {
 
+    if(moves < 10) {
+        starContainer.innerHTML = star + star + star;
+
+    } else if(moves < 15) {
+        starContainer.innerHTML = star + star;
+
+    } else {
+        starContainer.innerHTML = star;
+    }
+};
 
 //game over
+
+function gameOver() {
+    if(cards.length === matchedCards.length) {
+        alert('game over');
+    }
+};
 
 
 //restart game
