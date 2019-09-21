@@ -1,22 +1,14 @@
 /*
  * Create a list that holds all of your cards
  */let icons = [
-     'fa fa-diamond',
-     'fa fa-diamond',
-     'fa fa-paper-plane-o',
-     'fa fa-paper-plane-o',
-     'fa fa-anchor',
-     'fa fa-anchor',
-     'fa fa-bolt',
-     'fa fa-bolt',
-     'fa fa-cube',
-     'fa fa-cube',
-     'fa fa-leaf',
-     'fa fa-leaf',
-     'fa fa-bomb',
-     'fa fa-bomb',
-     'fa fa-bicycle',
-     'fa fa-bicycle'
+     'fa fa-diamond', 'fa fa-diamond',
+     'fa fa-paper-plane-o', 'fa fa-paper-plane-o',
+     'fa fa-anchor', 'fa fa-anchor',
+     'fa fa-bolt', 'fa fa-bolt',
+     'fa fa-cube', 'fa fa-cube',
+     'fa fa-leaf', 'fa fa-leaf',
+     'fa fa-bomb', 'fa fa-bomb',
+     'fa fa-bicycle', 'fa fa-bicycle'
  ];
 
 let cardDeck = document.querySelector('.deck');
@@ -25,36 +17,79 @@ let cards = [...icons];
 let movesCounter = document.querySelector('.moves');
 let moves = 0;
 
+//arrays for the opened and matched
+let openedCards = [];
+let matchedCards = []; //use for ending game
+
 
 //start the game
 function init() {
     cards = shuffle(cards);
     for(let i = 0; i < cards.length; i++) {
         const card = document.createElement("li");
-        card.classList.add("card");
-        card.classList.add("show"); //testing
-        card.innerHTML = `<i class="${cards[i]}"></i>`;
+        card.classList.add('card');
+        card.classList.add('show'); //testing
+        card.innerHTML = `<i class='${cards[i]}'></i>`;
         cardDeck.appendChild(card);
 
-        card.addEventListener('click', function () {
-            console.log(`The ${i} clicked!`);
-            countMoves();
-          });
 
+        // Add Click Event to each Card
+        click(card);
         movesCounter.innerHTML = 0;
-
-
     }
 };
 
 
+// Click Function
+function click(moop) {
+
+    // Card Click Event
+    moop.addEventListener("click", function() {
+
+        const currentCard = this;
+        const previousCard = openedCards[0];
+
+        // We have an existing OPENED card
+        if(openedCards.length === 1) {
+
+            moop.classList.add("open", "show", "disable");
+            openedCards.push(this);
+
+            // We should compare our 2 opened cards!
+            compareCards(currentCard, previousCard);
+
+        } else {
+        // We don't have any opened cards
+            currentCard.classList.add("open", "show", "disable");
+            openedCards.push(this);
+        }
+
+    });
+}
 
 
 
+function compareCards( first, second) {
+    if (first.innerHTML === second.innerHTML) {
+        first.classList.add("match");
+        second.classList.add("match");
 
-//arrays for the opened and matched
-let openedCards = [];
-let matchedCards = [];
+        matchedCards.push(first, second);
+        openedCards =[];
+    } else {
+        setTimeout(function () {
+            first.classList.remove("open", "xshow", "disable");
+            second.classList.remove("open", "xshow", "disable");
+            openedCards =[];
+        }, 500);
+
+
+    }
+    countMoves();
+
+}
+
+
 
 
 //count the moves
@@ -73,15 +108,8 @@ function countMoves(){
 
 
 //restart game
-function resetGame() {
-};
+function resetGame() {};
 
-/*
- * Display the cards on the page
- *   - shuffle the list of cards using the provided "shuffle" method below
- *   - loop through each card and create its HTML
- *   - add each card's HTML to the page
- */
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
