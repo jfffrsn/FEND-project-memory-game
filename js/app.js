@@ -1,7 +1,80 @@
 /*
  * Create a list that holds all of your cards
- */
+ */let icons = [
+     'fa fa-diamond',
+     'fa fa-diamond',
+     'fa fa-paper-plane-o',
+     'fa fa-paper-plane-o',
+     'fa fa-anchor',
+     'fa fa-anchor',
+     'fa fa-bolt',
+     'fa fa-bolt',
+     'fa fa-cube',
+     'fa fa-cube',
+     'fa fa-leaf',
+     'fa fa-leaf',
+     'fa fa-bomb',
+     'fa fa-bomb',
+     'fa fa-bicycle',
+     'fa fa-bicycle'
+ ];
 
+let cardDeck = document.querySelector('.deck');
+let cards = [...icons];
+
+let movesCounter = document.querySelector('.moves');
+let moves = 0;
+
+
+//start the game
+function init() {
+    cards = shuffle(cards);
+    for(let i = 0; i < cards.length; i++) {
+        const card = document.createElement("li");
+        card.classList.add("card");
+        card.classList.add("show"); //testing
+        card.innerHTML = `<i class="${cards[i]}"></i>`;
+        cardDeck.appendChild(card);
+
+        card.addEventListener('click', function () {
+            console.log(`The ${i} clicked!`);
+            countMoves();
+          });
+
+        movesCounter.innerHTML = 0;
+
+
+    }
+};
+
+
+
+
+
+
+//arrays for the opened and matched
+let openedCards = [];
+let matchedCards = [];
+
+
+//count the moves
+function countMoves(){
+    moves++;
+    movesCounter.innerHTML = moves;
+};
+
+//
+
+
+//rate the game
+
+
+//game over
+
+
+//restart game
+function resetGame() {
+};
 
 /*
  * Display the cards on the page
@@ -26,31 +99,5 @@ function shuffle(array) {
 }
 
 
-/*
- * set up the event listener for a card. If a card is clicked:
- *  - display the card's symbol (put this functionality in another function that you call from this one)
- *  - add the card to a *list* of "open" cards (put this functionality in another function that you call from this one)
- *  - if the list already has another card, check to see if the two cards match
- *    + if the cards do match, lock the cards in the open position (put this functionality in another function that you call from this one)
- *    + if the cards do not match, remove the cards from the list and hide the card's symbol (put this functionality in another function that you call from this one)
- *    + increment the move counter and display it on the page (put this functionality in another function that you call from this one)
- *    + if all cards have matched, display a message with the final score (put this functionality in another function that you call from this one)
- */
-
-
-const allCards = document.querySelectorAll('.card');
-const openCards = [];
-
-allCards.forEach(card => {
-    card.addEventListener('click', e => {
-        if(openCards.length >= 2) {
-
-        } else{
-            openCards.push(card);
-            card.classList.add('open', 'show');
-            console.log(openCards)
-        }
-
-
-    });
-});
+//start the game
+init();
