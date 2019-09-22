@@ -111,3 +111,41 @@ h1 {
     float: right;
     cursor: pointer;
 }
+
+
+/*
+Modal Styles
+*/
+.modal {
+    background-color: rgba(0,0,0,.3);
+    position: absolute;
+    height: 100vh;
+    width: 100vw;
+    top: 0;
+    left: 0;
+
+    align-items: center;
+    justify-content: center;
+    display: none;
+
+    opacity: 0;
+    transition: all 2s;
+    visibility: hidden;
+}
+
+.modal.show{
+     display: flex;
+     opacity: 1;
+     visibility: visible;
+}
+
+.modal-content{
+    max-width: 500px;
+    background-color: white;
+    padding: 5rem;
+}
+ .total-stars{
+    list-style: none;
+    display: inline-flex;
+    padding: 0;
+ }

@@ -16,9 +16,7 @@
         </header>
 
         <section class="score-panel">
-        	<ul class="stars">
-
-        	</ul>
+        	<ul class="stars"></ul>
 
         	<span class="moves">3</span> Moves
 
@@ -28,6 +26,18 @@
         </section>
 
         <ul class="deck"></ul>
+
+        <div class="modal">
+            <div class="modal-content">
+                <h1>Congratulations!</h1>
+                <p>You have a great memory.</p>
+                <p>In <span id="total-hours"></span> Hours, <span id="total-minutes"></span> Minutes and <span id="total-seconds"></span> Seconds</p>
+                <p>It took you: <span class="total-moves"></span> moves to complete it!<br>
+                Your rating is: <ul class="total-stars"></ul></p>
+                <p>Well done!!</p>
+                <button class="modal-restart">Play Again?</button>
+            </div>
+        </div>
 
     </div>
 

@@ -12,7 +12,7 @@
  ];
 
 let cardDeck = document.querySelector('.deck');
-let cards = [...icons];
+
 
 let movesCounter = document.querySelector('.moves');
 let moves = 0;
@@ -22,16 +22,20 @@ let openedCards = [];
 let matchedCards = []; //use for ending game
 
 //ratings
-let starContainer = document.querySelector('.stars');
+let starRating = document.querySelector('.stars');
 let star = `<li><i class="fa fa-star"></i></li>`;
 
+//restart
+let restartButton = document.querySelector('.restart');
+let restartModalButton = document.querySelector('.modal-restart');
 
-
+//modal
+let modal =  document.querySelector(".modal");
 
 
 //start the game
 function startGame() {
-    cards = shuffle(cards);
+    let cards = shuffle(icons);
     for(let i = 0; i < cards.length; i++) {
         const card = document.createElement("li");
         card.classList.add('card');
@@ -39,35 +43,33 @@ function startGame() {
         card.classList.add("show");//testing
         cardDeck.appendChild(card);
 
-
         // Add Click Event to each Card
         click(card);
         movesCounter.innerHTML = 0;
-        starContainer.innerHTML = star + star + star;
+        starRating.innerHTML = star + star + star;
     }
 };
 
 
 // Click Function
-function click(moop) {
+function click(card) {
 
     // Card Click Event
-    moop.addEventListener("click", function() {
+    card.addEventListener("click", function() {
 
         const currentCard = this;
         const previousCard = openedCards[0];
 
-        // We have an existing OPENED card
+        // if there is an existing OPENED card
         if(openedCards.length === 1) {
-
-            moop.classList.add("open", "show", "disable");
+            card.classList.add("open", "show", "disable");
             openedCards.push(this);
 
-            // We should compare our 2 opened cards!
+            // compare the 2 opened cards
             compareCards(currentCard, previousCard);
 
         } else {
-        // We don't have any opened cards
+            // no opened cards
             currentCard.classList.add("open", "show", "disable");
             openedCards.push(this);
         }
@@ -76,8 +78,8 @@ function click(moop) {
 }
 
 
-
-function compareCards( first, second) {
+//Compare cards
+function compareCards(first, second) {
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("match");
         second.classList.add("match");
@@ -93,7 +95,6 @@ function compareCards( first, second) {
             openedCards = [];
         }, 500);
 
-
     }
     countMoves();
     rateGame();
@@ -104,47 +105,66 @@ function compareCards( first, second) {
 
 
 
-//count the moves
+//Count the moves
 function countMoves(){
     moves++;
     movesCounter.innerHTML = moves;
 };
 
 
-//rate the game
+//Rate the game
 function rateGame() {
     if(moves < 10) {
-        starContainer.innerHTML = star + star + star;
+        starRating.innerHTML = star + star + star;
     } else if(moves < 15) {
-        starContainer.innerHTML = star + star;
+        starRating.innerHTML = star + star;
     } else {
-        starContainer.innerHTML = star;
+        starRating.innerHTML = star;
     }
 };
 
-//game over
+//End the game
 function gameOver() {
-    if(cards.length === matchedCards.length) {
-        alert('game over');
+    if(icons.length === matchedCards.length) {
+        modal.classList.add("show");
+        document.querySelector(".total-moves").innerHTML = moves;
+        document.querySelector(".total-stars").innerHTML = starRating.innerHTML;
+
+
     }
 };
 
 
 //restart game
-let restartButton = document.querySelector('.restart');
+
+function reset(){
+    cardDeck.innerHTML = "";
+    matchedCards = [];
+    moves = 0;
+    startGame();
+}
 
 function restartGame(){
     restartButton.addEventListener('click', function(){
-        alert('restart');
-        cardDeck.innerHTML = "";
-        matchedCards = [];
-        moves = 0;
-
-        startGame();
+        reset();
     })
 };
 
 restartGame();
+
+//modal restart
+function restartModalGame(){
+    restartModalButton.addEventListener('click', function(){
+        reset();
+        modal.classList.remove("show");
+    })
+};
+
+ restartModalGame();
+
+
+
+
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
