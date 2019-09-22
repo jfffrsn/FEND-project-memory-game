@@ -26,13 +26,17 @@ let starContainer = document.querySelector('.stars');
 let star = `<li><i class="fa fa-star"></i></li>`;
 
 
+
+
+
 //start the game
-function init() {
+function startGame() {
     cards = shuffle(cards);
     for(let i = 0; i < cards.length; i++) {
         const card = document.createElement("li");
         card.classList.add('card');
         card.innerHTML = `<i class='${cards[i]}'></i>`;
+        card.classList.add("show");//testing
         cardDeck.appendChild(card);
 
 
@@ -77,6 +81,8 @@ function compareCards( first, second) {
     if (first.innerHTML === second.innerHTML) {
         first.classList.add("match");
         second.classList.add("match");
+        first.classList.remove("open","show");
+        second.classList.remove("open","show");
 
         matchedCards.push(first, second);
         openedCards = [];
@@ -104,25 +110,19 @@ function countMoves(){
     movesCounter.innerHTML = moves;
 };
 
-//
-
 
 //rate the game
 function rateGame() {
-
     if(moves < 10) {
         starContainer.innerHTML = star + star + star;
-
     } else if(moves < 15) {
         starContainer.innerHTML = star + star;
-
     } else {
         starContainer.innerHTML = star;
     }
 };
 
 //game over
-
 function gameOver() {
     if(cards.length === matchedCards.length) {
         alert('game over');
@@ -131,8 +131,20 @@ function gameOver() {
 
 
 //restart game
-function resetGame() {};
+let restartButton = document.querySelector('.restart');
 
+function restartGame(){
+    restartButton.addEventListener('click', function(){
+        alert('restart');
+        cardDeck.innerHTML = "";
+        matchedCards = [];
+        moves = 0;
+
+        startGame();
+    })
+};
+
+restartGame();
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
@@ -151,4 +163,4 @@ function shuffle(array) {
 
 
 //start the game
-init();
+startGame();
