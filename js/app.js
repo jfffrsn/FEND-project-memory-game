@@ -12,7 +12,7 @@
  ];
 
 let cardDeck = document.querySelector('.deck');
-
+let cards = [...icons];
 
 let movesCounter = document.querySelector('.moves');
 let moves = 0;
@@ -35,7 +35,7 @@ let modal =  document.querySelector(".modal");
 
 //start the game
 function startGame() {
-    let cards = shuffle(icons);
+    shuffle(cards);
     for(let i = 0; i < cards.length; i++) {
         const card = document.createElement("li");
         card.classList.add('card');
@@ -54,33 +54,40 @@ function startGame() {
 // Click Function
 function click(card) {
 
-    // Card Click Event
-    card.addEventListener("click", function() {
 
-        const currentCard = this;
-        const previousCard = openedCards[0];
 
-        // if there is an existing OPENED card
-        if(openedCards.length === 1) {
-            card.classList.add("open", "show", "disable");
-            openedCards.push(this);
+        // Card Click Event
+        card.addEventListener("click", function() {
 
-            // compare the 2 opened cards
-            compareCards(currentCard, previousCard);
+            if(openedCards.length < 2) {
 
-        } else {
-            // no opened cards
-            currentCard.classList.add("open", "show", "disable");
-            openedCards.push(this);
-        }
+                const currentCard = this;
+                const previousCard = openedCards[0];
 
-    });
+                    // if there is an existing OPENED card
+                    if(openedCards.length === 1) {
+                        card.classList.add("open", "show", "disable");
+                        openedCards.push(this);
+
+                        // compare the 2 opened cards
+                        compareCards(currentCard, previousCard);
+
+                    } else {
+                        // no opened cards
+                        currentCard.classList.add("open", "show", "disable");
+                        openedCards.push(this);
+                    }
+            }
+        });
+
+
+
 }
-
 
 //Compare cards
 function compareCards(first, second) {
     if (first.innerHTML === second.innerHTML) {
+
         first.classList.add("match");
         second.classList.add("match");
         first.classList.remove("open","show");
@@ -101,6 +108,9 @@ function compareCards(first, second) {
     gameOver();
 
 }
+
+
+
 
 
 
