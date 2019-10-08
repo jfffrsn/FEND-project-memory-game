@@ -1,14 +1,18 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Matching Game</title>
     <meta name="description" content="">
-    <link rel="stylesheet prefetch" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-    <link rel="stylesheet prefetch" href="https://fonts.googleapis.com/css?family=Coda">
+    <link rel="stylesheet prefetch" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.1/css/all.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Fira+Sans:300,400,500,600,700&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
     <link rel="stylesheet" href="css/app.css">
 </head>
 <body>
+
 
     <div class="container">
         <header>
@@ -16,27 +20,36 @@
         </header>
 
         <section class="score-panel">
+
         	<ul class="stars"></ul>
 
-        	<span class="moves">3</span> Moves
+            <span class="moves-container">
+                <span class="moves">3</span> Moves
+            </span>
+
+            <span class="timer">00:00</span>
 
             <div class="restart">
-        		<i class="fa fa-repeat"></i>
-        	</div>
+                <i class="fas fa-redo-alt"></i> Restart
+            </div>
+
         </section>
 
         <ul class="deck"></ul>
 
         <div class="modal">
+
             <div class="modal-content">
                 <h1>Congratulations!</h1>
-                <p>You have a great memory.</p>
-                <p>In <span id="total-hours"></span> Hours, <span id="total-minutes"></span> Minutes and <span id="total-seconds"></span> Seconds</p>
-                <p>It took you: <span class="total-moves"></span> moves to complete it!<br>
-                Your rating is: <ul class="total-stars"></ul></p>
+                <h2>You have a great memory.</h2>
+                <p>You completed the game in <span class="total-time"></span></p>
+                <p>It took you <span class="total-moves"></span> moves to complete it!</p>
+                <p>Your rating is </p>
+                <ul class="total-stars"></ul>
                 <p>Well done!!</p>
                 <button class="modal-restart">Play Again?</button>
             </div>
+
         </div>
 
     </div>

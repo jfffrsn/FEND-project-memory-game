@@ -1,46 +1,56 @@
-/*
- * Create a list that holds all of your cards
- */let icons = [
-     'fa fa-diamond', 'fa fa-diamond',
-     'fa fa-paper-plane-o', 'fa fa-paper-plane-o',
-     'fa fa-anchor', 'fa fa-anchor',
-     'fa fa-bolt', 'fa fa-bolt',
-     'fa fa-cube', 'fa fa-cube',
-     'fa fa-leaf', 'fa fa-leaf',
-     'fa fa-bomb', 'fa fa-bomb',
-     'fa fa-bicycle', 'fa fa-bicycle'
+// Icons for the cards
+let icons = [
+     'fas fa-cat', 'fas fa-cat',
+     'fas fa-dragon', 'fas fa-dragon',
+     'fas fa-fish', 'fas fa-fish',
+     'fas fa-spider', 'fas fa-spider',
+     'fas fa-hippo', 'fas fa-hippo',
+     'fas fa-crow', 'fas fa-crow',
+     'fas fa-frog', 'fas fa-frog',
+     'fas fa-skull-crossbones', 'fas fa-skull-crossbones'
  ];
 
+
+ // Cards
 let cardDeck = document.querySelector('.deck');
 let cards = [...icons];
 
+// Moves
 let movesCounter = document.querySelector('.moves');
 let moves = 0;
 
-//arrays for the opened and matched
+// Arrays for the opened and matched
 let openedCards = [];
 let matchedCards = []; //use for ending game
 
-//ratings
+// Ratings
 let starRating = document.querySelector('.stars');
-let star = `<li><i class="fa fa-star"></i></li>`;
+let star = `<li><i class="fas fa-star"></i></li>`;
 
-//restart
+// Timer
+let gameTimer = document.querySelector('.timer');
+let gameTimerOn = false; // on/off switch
+let time = 0;
+let minutes = 0;
+let seconds = 0;
+let timer;
+
+// Restart
 let restartButton = document.querySelector('.restart');
 let restartModalButton = document.querySelector('.modal-restart');
 
-//modal
+// Modal
 let modal =  document.querySelector(".modal");
 
 
-//start the game
+// Start the game
 function startGame() {
     shuffle(cards);
     for(let i = 0; i < cards.length; i++) {
         const card = document.createElement("li");
         card.classList.add('card');
         card.innerHTML = `<i class='${cards[i]}'></i>`;
-        card.classList.add("show");//testing
+        //card.classList.add("show");//testing
         cardDeck.appendChild(card);
 
         // Add Click Event to each Card
@@ -53,55 +63,44 @@ function startGame() {
 
 // Click Function
 function click(card) {
-
-
-
         // Card Click Event
         card.addEventListener("click", function() {
-
+            // Start the timer on the first click
+            if (gameTimerOn === false) {
+                startTimer();
+                gameTimerOn = true;
+            }
             if(openedCards.length < 2) {
-
                 const currentCard = this;
                 const previousCard = openedCards[0];
-
-                    // if there is an existing OPENED card
+                    // If there is an existing OPENED card
                     if(openedCards.length === 1) {
-                        card.classList.add("open", "show", "disable");
+                        card.className = "card open show disable animated flipInY";
                         openedCards.push(this);
-
-                        // compare the 2 opened cards
+                    // Compare the 2 OPENED cards
                         compareCards(currentCard, previousCard);
-
                     } else {
-                        // no opened cards
-                        currentCard.classList.add("open", "show", "disable");
+                    // No OPENED cards
+                        card.className = "card open show disable animated flipInY";
                         openedCards.push(this);
                     }
             }
         });
-
-
-
 }
 
 //Compare cards
 function compareCards(first, second) {
     if (first.innerHTML === second.innerHTML) {
-
-        first.classList.add("match");
-        second.classList.add("match");
-        first.classList.remove("open","show");
-        second.classList.remove("open","show");
-
+        first.className = "card match animated tada disable";
+        second.className = "card match animated tada disable";
         matchedCards.push(first, second);
         openedCards = [];
     } else {
         setTimeout(function () {
-            first.classList.remove("open", "show", "disable");
-            second.classList.remove("open", "show", "disable");
+            first.className = "card animated shake";
+            second.className = "card animated shake";
             openedCards = [];
         }, 500);
-
     }
     countMoves();
     rateGame();
@@ -109,60 +108,59 @@ function compareCards(first, second) {
 
 }
 
-
-
-
-
-
-
 //Count the moves
 function countMoves(){
     moves++;
     movesCounter.innerHTML = moves;
 };
 
-
-//Rate the game
+// Rate the game
 function rateGame() {
-    if(moves < 10) {
+    if(moves < 20) {
         starRating.innerHTML = star + star + star;
-    } else if(moves < 15) {
+    } else if(moves < 30) {
         starRating.innerHTML = star + star;
     } else {
         starRating.innerHTML = star;
     }
 };
 
-//End the game
+// End the game
 function gameOver() {
     if(icons.length === matchedCards.length) {
         modal.classList.add("show");
         document.querySelector(".total-moves").innerHTML = moves;
         document.querySelector(".total-stars").innerHTML = starRating.innerHTML;
-
-
+        document.querySelector(".total-time").innerHTML = gameTimer.innerHTML;
+        clearInterval(timer);
+        timerOn = false;
     }
 };
 
-
-//restart game
-
+// Restart the game
 function reset(){
     cardDeck.innerHTML = "";
     matchedCards = [];
+    openedCards = [];
     moves = 0;
+    clearInterval(timer);
+    gameTimerOn = false;
+    gameTimer.innerHTML = "00:00";
+    time = 0;
+    minutes = 0;
+    seconds = 0;
     startGame();
 }
 
 function restartGame(){
     restartButton.addEventListener('click', function(){
         reset();
-    })
+    });
 };
 
 restartGame();
 
-//modal restart
+// Restart the game from the modal
 function restartModalGame(){
     restartModalButton.addEventListener('click', function(){
         reset();
@@ -173,13 +171,19 @@ function restartModalGame(){
  restartModalGame();
 
 
-
-
+// Timer
+function startTimer() {
+    timer = setInterval(function() {
+    time++;
+    minutes = ("0" + Math.floor(time / 60)).slice(-2);
+    seconds = ("0" + time % 60).slice(-2);
+    gameTimer.innerHTML = `${minutes}:${seconds}`;
+  }, 1000);
+}
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffle(array) {
     var currentIndex = array.length, temporaryValue, randomIndex;
-
     while (currentIndex !== 0) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex -= 1;
@@ -187,10 +191,8 @@ function shuffle(array) {
         array[currentIndex] = array[randomIndex];
         array[randomIndex] = temporaryValue;
     }
-
     return array;
 }
 
-
-//start the game
+// Start the game
 startGame();
