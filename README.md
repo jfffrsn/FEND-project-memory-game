@@ -1,9 +1,11 @@
 # Memory Game Project
 
+demo: https://jfffrsn.github.io/FEND-project-memory-game/
+
 ## Instructions
 
 
-project rubric https://review.udacity.com/#!/rubrics/591/view
+project rubric: https://review.udacity.com/#!/rubrics/591/view
 
 
 ### Memory Game Logic
