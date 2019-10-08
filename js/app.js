@@ -10,7 +10,6 @@ let icons = [
      'fas fa-skull-crossbones', 'fas fa-skull-crossbones'
  ];
 
-
  // Cards
 let cardDeck = document.querySelector('.deck');
 let cards = [...icons];
